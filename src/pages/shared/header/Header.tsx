@@ -38,7 +38,7 @@ const Header = () => {
     </>
   );
   return (
-    <div className=" shadow-sm ">
+    <div className=" shadow-sm  w-full bg-white z-10 sticky top-0">
       <div className="container mx-auto">
         <div className="navbar ">
           <div className="navbar-start">
