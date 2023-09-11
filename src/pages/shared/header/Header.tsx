@@ -10,7 +10,7 @@ const Header = () => {
   const [darkMode, setDarkMode] = useState(false);
   const user = "g";
 
-  const menuClass = "btn  btn-ghost hover:bg-black-100 lg:px-6 rounded-sm";
+  const menuClass = "btn  btn-ghost hover:bg-base-200 lg:px-6 rounded-sm";
   const menu = (
     <>
       <NavLink to={"/all-books"} className={menuClass}>
