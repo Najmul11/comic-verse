@@ -84,7 +84,7 @@ const TopTenBooks = () => {
             <SingleBook key={index} book={book} index={index + 1}></SingleBook>
           ))}
           <div>
-            <Link to={"/"} className="btn">
+            <Link to={"/"} className="btn rounded-sm">
               View All
             </Link>
           </div>
