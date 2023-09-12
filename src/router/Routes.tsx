@@ -4,6 +4,8 @@ import Main from "../layouts/Main";
 import Home from "../pages/home/Home";
 import AllBooks from "../pages/allBooks/AllBooks";
 import AddNewBook from "../pages/addNewBook/AddNewBook";
+import { Login } from "../pages/auth/Login";
+import { Register } from "../pages/auth/Register";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +27,14 @@ export const router = createBrowserRouter([
           {
             path: "/add-new-book",
             element: <AddNewBook />,
+          },
+          {
+            path: "/login",
+            element: <Login />,
+          },
+          {
+            path: "/signup",
+            element: <Register />,
           },
         ],
       },
