@@ -8,7 +8,7 @@ import "./Header.css";
 
 const Header = () => {
   const [darkMode, setDarkMode] = useState(false);
-  const user = "g";
+  const user = "t";
 
   const menuClass = "btn  btn-ghost hover:bg-base-200 lg:px-6 rounded-sm";
   const menu = (
@@ -30,7 +30,7 @@ const Header = () => {
         </>
       ) : (
         <>
-          <NavLink to={"/signin"} className={menuClass}>
+          <NavLink to={"/login"} className={menuClass}>
             Sign in
           </NavLink>
         </>

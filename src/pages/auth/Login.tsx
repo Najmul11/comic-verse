@@ -23,7 +23,7 @@ export const Login = () => {
               </label>
               <input
                 type="text"
-                placeholder="email"
+                placeholder="password"
                 className="input input-bordered "
               />
             </div>
