@@ -26,7 +26,7 @@ const SingleBook = ({ book, index, children }: IProps) => {
         />
       </div>
       <div className="absolute inset-0 flex items-end justify-center px-4 py-2 bg-gradient-to-t from-black to-transparent to-60% opacity-80  transition-opacity group-hover:opacity-100 rounded-lg">
-        <div className="h-32">
+        <div className={`${!index && "h-32"}`}>
           <h2 className="text-white text-lg font-semibold">
             {index && `#${index} `}
             {title}

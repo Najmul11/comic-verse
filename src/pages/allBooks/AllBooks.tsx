@@ -1,4 +1,6 @@
 import SingleBook from "../home/TopTenBooks/SingleBook";
+import { useState } from "react";
+import Pagination from "./Pagination/Pagination";
 
 export type IComicBook = {
   title: string;
@@ -92,24 +94,40 @@ const comicBooks: IComicBook[] = [
 ];
 
 const AllBooks = () => {
+  const totalPages = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  function handlePageChange(page: number) {
+    setCurrentPage(page);
+    // ... do something with `page`
+  }
   return (
     <div>
-      <div className="container mx-auto border flex gap-5">
-        <div className="w-1/4 bg-pink-400">hello</div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center w-3/4 gap-5  rounded-lg">
-          {comicBooks.map((book, index) => {
-            const { genre, publicationDate } = book;
-            return (
-              <SingleBook book={book} key={index}>
-                <>
-                  <p className="text-white text-sm font-medium"># {genre}</p>
-                  <p className="text-white text-sm font-medium">
-                    {publicationDate}
-                  </p>
-                </>
-              </SingleBook>
-            );
-          })}
+      <div className="container mx-auto  flex gap-5 py-12">
+        <div className="w-1/4 bg-orange-500">hello</div>
+        <div className="w-3/4   rounded-lg">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center gap-5">
+            {comicBooks.map((book, index) => {
+              const { genre, publicationDate } = book;
+              return (
+                <SingleBook book={book} key={index}>
+                  <>
+                    <p className="text-white text-sm font-medium"># {genre}</p>
+                    <p className="text-white text-sm font-medium">
+                      {publicationDate}
+                    </p>
+                  </>
+                </SingleBook>
+              );
+            })}
+          </div>
+          <div className="pt-20  mx-auto w-3/5">
+            <Pagination
+              totalPages={totalPages}
+              handlePageChange={handlePageChange}
+              currentPage={currentPage}
+            />
+          </div>
         </div>
       </div>
     </div>
