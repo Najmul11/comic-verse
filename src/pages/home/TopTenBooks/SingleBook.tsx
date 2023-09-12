@@ -9,9 +9,10 @@ type IProps = {
 };
 const SingleBook = ({ book, index, children }: IProps) => {
   const { title, image, author } = book;
+  const _id = "51hyh";
   return (
     <Link
-      to={"/"}
+      to={`/all-books/${_id}`}
       className={`relative group rounded-lg ${
         index ? "lg:h-[570px]" : "lg:h-[400px]"
       }`}
