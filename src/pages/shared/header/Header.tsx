@@ -2,13 +2,14 @@ import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
+import { TbJewishStar } from "react-icons/tb";
 import { HiOutlineSun, HiOutlineMoon } from "react-icons/hi";
 import BrandLogo from "../../../assets/images/BrandLogo.png";
 import "./Header.css";
 
 const Header = () => {
   const [darkMode, setDarkMode] = useState(false);
-  const user = "t";
+  const user = "f";
 
   const menuClass = "btn  btn-ghost hover:bg-base-200 lg:px-6 rounded-sm";
   const menu = (
@@ -21,12 +22,13 @@ const Header = () => {
           <NavLink to={"/add-new-book"} className={menuClass}>
             Add New Book
           </NavLink>
-          <button className={`${menuClass}`}>
-            <span className="text-xl">
-              <FiLogOut />
-            </span>
-            Logout
-          </button>
+          <label
+            htmlFor="my-drawer"
+            className={`${menuClass}  drawer-button group`}
+          >
+            <TbJewishStar className={"text-xl group-hover:text-orange-500"} />
+            wishlist
+          </label>
         </>
       ) : (
         <>
@@ -34,6 +36,21 @@ const Header = () => {
             Sign in
           </NavLink>
         </>
+      )}
+      {darkMode ? (
+        <button
+          onClick={() => setDarkMode(!darkMode)}
+          className={`${menuClass} group`}
+        >
+          <HiOutlineSun className={`text-xl group-hover:text-orange-500`} />
+        </button>
+      ) : (
+        <button
+          onClick={() => setDarkMode(!darkMode)}
+          className={`${menuClass} group`}
+        >
+          <HiOutlineMoon className={"text-xl group-hover:text-orange-500"} />
+        </button>
       )}
     </>
   );
@@ -60,39 +77,36 @@ const Header = () => {
           <div className="navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal px-1">{menu}</ul>
           </div>
-          <div className="navbar-end">
-            <div className="mr-5">
-              {darkMode ? (
-                <HiOutlineSun
-                  onClick={() => setDarkMode(!darkMode)}
-                  className="text-2xl mr-4 hover:fill-white cursor-pointer"
-                />
-              ) : (
-                <HiOutlineMoon
-                  onClick={() => setDarkMode(!darkMode)}
-                  className="text-2xl mr-4 hover:fill-black cursor-pointer"
-                />
-              )}
-            </div>
-
+          <div className="navbar-end ">
             {user && (
-              <div className="dropdown dropdown-end">
-                <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                  <div className="w-10 rounded-full">
-                    <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-                  </div>
-                </label>
-                <ul
-                  tabIndex={0}
-                  className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-                >
-                  <li>
-                    <a className="justify-between">Profile</a>
-                  </li>
-                  <li>
-                    <a>Settings</a>
-                  </li>
-                </ul>
+              <div className="flex gap-5 items-center">
+                <div className="dropdown dropdown-end  ">
+                  <label
+                    tabIndex={0}
+                    className="btn btn-ghost btn-circle avatar"
+                  >
+                    <div className="w-10 rounded-full">
+                      <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                    </div>
+                  </label>
+                  <ul
+                    tabIndex={0}
+                    className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+                  >
+                    <li>
+                      <a className="justify-between">Profile</a>
+                    </li>
+                    <li>
+                      <a>Settings</a>
+                    </li>
+                  </ul>
+                </div>
+                <button className={`btn rounded-sm  border-0 group`}>
+                  <span className="text-xl">
+                    <FiLogOut className={"group-hover:text-orange-500"} />
+                  </span>
+                  Logout
+                </button>
               </div>
             )}
           </div>
