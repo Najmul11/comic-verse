@@ -1,6 +1,7 @@
 import SingleBook from "../home/TopTenBooks/SingleBook";
 import { useState } from "react";
 import Pagination from "./Pagination/Pagination";
+import Sidebar from "./Sidebar/Sidebar";
 
 export type IComicBook = {
   title: string;
@@ -104,7 +105,9 @@ const AllBooks = () => {
   return (
     <div>
       <div className="container mx-auto  flex gap-5 py-12">
-        <div className="w-1/4 bg-orange-500">hello</div>
+        <div className="w-1/4">
+          <Sidebar />
+        </div>
         <div className="w-3/4   rounded-lg">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center gap-5">
             {comicBooks.map((book, index) => {

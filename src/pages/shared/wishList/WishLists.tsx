@@ -22,10 +22,10 @@ const WishLists = () => {
   ];
 
   return (
-    <div className="dropdown">
+    <div className="dropdown dropdown-hover">
       <label
         tabIndex={0}
-        className="btn  btn-ghost hover:bg-base-200 lg:px-6 rounded-sm"
+        className="btn  btn-ghost hover:bg-base-200 lg:px-6 rounded-sm group"
       >
         <TbJewishStar className={"text-xl group-hover:text-orange-500"} />
         wishlist

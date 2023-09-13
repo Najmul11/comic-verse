@@ -4,9 +4,10 @@ import { VscSend } from "react-icons/vsc";
 import Review from "./Review";
 
 const BookDetails = () => {
-  const _id = "g";
+  const user = "d";
 
   const comicBook = {
+    _id: "e",
     title: "Spider-Man: The Amazing Spider-Man",
     author: "Stan Lee",
     image:
@@ -21,7 +22,8 @@ const BookDetails = () => {
       },
     ],
   };
-  const { title, author, image, genre, publicationDate, reviews } = comicBook;
+  const { _id, title, author, image, genre, publicationDate, reviews } =
+    comicBook;
 
   return (
     <div>
@@ -31,6 +33,9 @@ const BookDetails = () => {
         </div>
         <div className="w-1/2 p-5">
           <div className="flex justify-end gap-10 ">
+            {user && (
+              <button className="btn rounded-sm group">Add to wishList</button>
+            )}
             <Link to={`/edit-book/${_id}`} className="btn rounded-sm">
               Edit Book
             </Link>
