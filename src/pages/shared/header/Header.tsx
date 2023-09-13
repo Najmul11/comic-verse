@@ -2,10 +2,10 @@ import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
-import { TbJewishStar } from "react-icons/tb";
 import { HiOutlineSun, HiOutlineMoon } from "react-icons/hi";
 import BrandLogo from "../../../assets/images/BrandLogo.png";
 import "./Header.css";
+import WishLists from "../wishList/WishLists";
 
 const Header = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -22,13 +22,7 @@ const Header = () => {
           <NavLink to={"/add-new-book"} className={menuClass}>
             Add New Book
           </NavLink>
-          <label
-            htmlFor="my-drawer"
-            className={`${menuClass}  drawer-button group`}
-          >
-            <TbJewishStar className={"text-xl group-hover:text-orange-500"} />
-            wishlist
-          </label>
+          <WishLists />
         </>
       ) : (
         <>
