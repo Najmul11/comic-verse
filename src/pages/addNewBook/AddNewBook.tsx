@@ -1,5 +1,21 @@
+import { useForm } from "react-hook-form";
+import { ChangeEvent } from "react";
+
 const AddNewBook = () => {
-  const img: string = "h";
+  const { control, handleSubmit, setValue, watch } = useForm();
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files![0];
+
+    if (file) {
+      const previewURL = URL.createObjectURL(file);
+      setValue("image", file);
+
+      setValue("imagePreview", previewURL);
+    }
+  };
+  const imagePreview = watch("imagePreview");
+
   return (
     <div className="bg-base-200 min-h-screen">
       <div className="container mx-auto flex justify-center items-center">
@@ -12,6 +28,7 @@ const AddNewBook = () => {
                   <span className="label-text">Cover photo</span>
                 </label>
                 <input
+                  onChange={(e) => handleFileChange(e)}
                   type="file"
                   placeholder="You can't touch this"
                   className="file-input file-input-bordered w-full "
@@ -59,10 +76,10 @@ const AddNewBook = () => {
               </div>
               <button className=" btn mb-4 mt-8">Add book</button>
             </form>
-            {img && (
+            {imagePreview && (
               <div className="py-10 pr-8  ">
                 <img
-                  src="https://cdn.marvel.com/u/prod/marvel/i/mg/7/30/6259cb878dd80/clean.jpg"
+                  src={imagePreview}
                   alt=""
                   className="w-80 h-[480px]  rounded-lg"
                 />
