@@ -16,7 +16,6 @@ function App() {
     if (accessToken) {
       try {
         const decodedToken = jwtDecode(accessToken);
-        console.log(decodedToken);
 
         dispatch(setUser(decodedToken));
       } catch (error) {

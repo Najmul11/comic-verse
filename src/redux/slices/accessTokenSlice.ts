@@ -17,9 +17,13 @@ const accessTokenSlice = createSlice({
       state.accessToken = action.payload;
       localStorage.setItem("accessToken", action.payload);
     },
+    clearAccessToken: (state) => {
+      state.accessToken = null;
+      localStorage.removeItem("accessToken");
+    },
   },
 });
 
-export const { setAccessToken } = accessTokenSlice.actions;
+export const { setAccessToken, clearAccessToken } = accessTokenSlice.actions;
 
 export default accessTokenSlice.reducer;

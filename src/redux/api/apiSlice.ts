@@ -8,13 +8,43 @@ export const api = createApi({
       query: (queryParams) =>
         `/books?${new URLSearchParams(queryParams).toString()}`,
     }),
+    listNewBook: builder.mutation({
+      query: ({ data, accessToken }) => ({
+        url: `/books/list-book`,
+        method: "POST",
+        body: data,
+        headers: {
+          Authorization: accessToken,
+        },
+      }),
+    }),
+    editBook: builder.mutation({
+      query: ({ id, data, accessToken }) => ({
+        url: `/books/${id}`,
+        method: "PATCH",
+        body: data,
+        headers: {
+          Authorization: accessToken,
+        },
+      }),
+    }),
     getSingleBook: builder.query({
       query: (id) => `/books/${id}`,
     }),
     postReview: builder.mutation({
-      query: ({ id, data }) => ({
+      query: ({ id, data, accessToken }) => ({
         url: `/books/reviews/${id}`,
         method: "PATCH",
+        body: data,
+        headers: {
+          Authorization: accessToken,
+        },
+      }),
+    }),
+    createUser: builder.mutation({
+      query: (data) => ({
+        url: `/users/signup`,
+        method: "POST",
         body: data,
       }),
     }),
@@ -30,7 +60,10 @@ export const api = createApi({
 
 export const {
   useGetAllBooksQuery,
+  useListNewBookMutation,
+  useEditBookMutation,
   useGetSingleBookQuery,
   usePostReviewMutation,
   useUserLoginMutation,
+  useCreateUserMutation,
 } = api;

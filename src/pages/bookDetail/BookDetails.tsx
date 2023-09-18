@@ -10,10 +10,14 @@ import {
 import { IBook } from "../home/TopTenBooks/TopTenBooks";
 import { formateDate } from "./dateFormate";
 import { useForm } from "react-hook-form";
+import { useAppSelector } from "../../redux/hook";
 
 const BookDetails = () => {
   const { id } = useParams();
+  const { accessToken } = useAppSelector((state) => state.accessToken);
+
   const { data, isLoading } = useGetSingleBookQuery(id);
+
   const [postReview, { isLoading: postLoading, isError }] =
     usePostReviewMutation();
 
@@ -32,7 +36,7 @@ const BookDetails = () => {
   const review = watch("review");
 
   const onSubmit = async (data: any) => {
-    const res = await postReview({ id, data });
+    const res = await postReview({ id, data, accessToken });
     console.log(res);
   };
 
