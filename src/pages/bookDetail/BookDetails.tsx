@@ -4,6 +4,8 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { VscSend } from "react-icons/vsc";
 import Review from "./Review";
 import {
+  useAddToWishListMutation,
+  useDeleteBookMutation,
   useGetSingleBookQuery,
   usePostReviewMutation,
 } from "../../redux/api/apiSlice";
@@ -14,12 +16,19 @@ import { useAppSelector } from "../../redux/hook";
 
 const BookDetails = () => {
   const { id } = useParams();
+
+  const { register, handleSubmit, errors, watch } = useForm();
+
+  const { user } = useAppSelector((state) => state.user);
   const { accessToken } = useAppSelector((state) => state.accessToken);
 
   const { data, isLoading } = useGetSingleBookQuery(id);
-
   const [postReview, { isLoading: postLoading, isError }] =
     usePostReviewMutation();
+  const [deleteBook] = useDeleteBookMutation();
+  const [addToWishList] = useAddToWishListMutation();
+
+  const review = watch("review");
 
   let bookInfo: IBook = {} as IBook;
   if (data?.data) {
@@ -32,15 +41,18 @@ const BookDetails = () => {
   const dateObj = new Date(publishedDate);
   const newPublishedDate = formateDate(dateObj);
 
-  const { register, handleSubmit, errors, watch } = useForm();
-  const review = watch("review");
-
   const onSubmit = async (data: any) => {
-    const res = await postReview({ id, data, accessToken });
-    console.log(res);
+    const response = await postReview({ id, data, accessToken });
   };
 
-  const user = "d";
+  const handleDelete = async () => {
+    const response = await deleteBook({ id, accessToken });
+    console.log(response);
+  };
+  const handleAddToWishlist = async () => {
+    const response = await addToWishList({ id, accessToken });
+    console.log(response);
+  };
 
   return (
     <div>
@@ -55,12 +67,17 @@ const BookDetails = () => {
         <div className="w-1/2 p-5">
           <div className="flex justify-end gap-10 ">
             {user && (
-              <button className="btn rounded-sm group">Add to wishList</button>
+              <button
+                onClick={handleAddToWishlist}
+                className="btn rounded-sm group"
+              >
+                Add to wishList
+              </button>
             )}
             <Link to={`/edit-book/${_id}`} className="btn rounded-sm">
               Edit Book
             </Link>
-            <button className="btn rounded-sm group">
+            <button onClick={handleDelete} className="btn rounded-sm group">
               <AiOutlineDelete className={"text-xl group-hover:fill-red-600"} />
               delete
             </button>

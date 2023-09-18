@@ -4,11 +4,13 @@ import { Outlet, ScrollRestoration } from "react-router-dom";
 import ScrollUpButton from "./pages/shared/ScrollUpButton/ScrollUpButton";
 import { useEffect } from "react";
 import jwtDecode from "jwt-decode";
-import { useAppDispatch } from "./redux/hook";
+import { useAppDispatch, useAppSelector } from "./redux/hook";
 import { setUser } from "./redux/slices/userSlice";
 
 function App() {
   const dispatch = useAppDispatch();
+
+  const { darkMode } = useAppSelector((state) => state.darkMode);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -25,7 +27,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <>
+    <div className={darkMode ? "dark" : ""}>
       <ScrollRestoration
         getKey={(location) => {
           return location.pathname;
@@ -39,7 +41,7 @@ function App() {
         className="scrollUpButton"
       />
       <Outlet />
-    </>
+    </div>
   );
 }
 

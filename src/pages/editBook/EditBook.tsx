@@ -1,10 +1,7 @@
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ChangeEvent } from "react";
 import { useAppSelector } from "../../redux/hook";
-import {
-  useEditBookMutation,
-  useListNewBookMutation,
-} from "../../redux/api/apiSlice";
+import { useEditBookMutation } from "../../redux/api/apiSlice";
 import { useParams } from "react-router-dom";
 
 type IFormData = {

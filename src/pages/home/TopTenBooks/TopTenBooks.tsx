@@ -14,7 +14,7 @@ export type IBook = {
   title: string;
   author: string;
   bookCover: {
-    publicid: string;
+    publicId: string;
     photoUrl: string;
   };
   genre: string;

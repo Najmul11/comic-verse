@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
@@ -6,10 +5,13 @@ import { HiOutlineSun, HiOutlineMoon } from "react-icons/hi";
 import BrandLogo from "../../../assets/images/BrandLogo.png";
 import "./Header.css";
 import WishLists from "../wishList/WishLists";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
+import { setDark, setLight } from "../../../redux/slices/darkModeSlice";
 
 const Header = () => {
-  const [darkMode, setDarkMode] = useState(false);
-  const user = "f";
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.user);
+  const { darkMode } = useAppSelector((state) => state.darkMode);
 
   const menuClass = "btn  btn-ghost hover:bg-base-200 lg:px-6 rounded-sm";
   const menu = (
@@ -33,14 +35,14 @@ const Header = () => {
       )}
       {darkMode ? (
         <button
-          onClick={() => setDarkMode(!darkMode)}
+          onClick={() => dispatch(setLight())}
           className={`${menuClass} group`}
         >
           <HiOutlineSun className={`text-xl group-hover:text-orange-500`} />
         </button>
       ) : (
         <button
-          onClick={() => setDarkMode(!darkMode)}
+          onClick={() => dispatch(setDark())}
           className={`${menuClass} group`}
         >
           <HiOutlineMoon className={"text-xl group-hover:text-orange-500"} />
@@ -80,7 +82,7 @@ const Header = () => {
                     className="btn btn-ghost btn-circle avatar"
                   >
                     <div className="w-10 rounded-full">
-                      <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                      <img src={"hh"} />
                     </div>
                   </label>
                   <ul

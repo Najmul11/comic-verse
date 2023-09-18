@@ -2,11 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import { api } from "./api/apiSlice";
 import accessTokenSlice from "./slices/accessTokenSlice";
 import userSlice from "./slices/userSlice";
+import darkModeSlice from "./slices/darkModeSlice";
 
 const store = configureStore({
   reducer: {
     accessToken: accessTokenSlice,
     user: userSlice,
+    darkMode: darkModeSlice,
     [api.reducerPath]: api.reducer,
   },
   middleware: (getDefaultMiddleware) =>
