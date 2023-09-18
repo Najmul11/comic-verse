@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom";
-import { IComicBook } from "./TopTenBooks";
 import { ReactNode } from "react";
+import { IBook } from "./TopTenBooks";
 
 type IProps = {
-  book: IComicBook;
+  book: IBook;
   index?: number;
   children?: ReactNode;
 };
 const SingleBook = ({ book, index, children }: IProps) => {
-  const { title, image, author } = book;
-  const _id = "51hyh";
+  const { _id, title, bookCover, author } = book;
+
+  const { photoUrl } = bookCover;
+
   return (
     <Link
       to={`/all-books/${_id}`}
@@ -19,7 +21,7 @@ const SingleBook = ({ book, index, children }: IProps) => {
     >
       <div className="overflow-hidden rounded-lg shadow-lg ">
         <img
-          src={image}
+          src={photoUrl}
           alt={title}
           className={` w-full transition-transform transform group-hover:scale-105 rounded-lg ${
             index ? "lg:h-[570px]" : "lg:h-[400px]"

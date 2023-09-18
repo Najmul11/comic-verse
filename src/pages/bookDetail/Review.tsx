@@ -1,14 +1,12 @@
-type IUserReview = {
-  reviewer: string;
-  reviewerEmail: string;
-  review: string;
-};
+import { IReview } from "../home/TopTenBooks/TopTenBooks";
+
 type IProps = {
-  userReview: IUserReview;
+  userReview: IReview;
 };
 
 const Review = ({ userReview }: IProps) => {
-  const { reviewer, reviewerEmail, review } = userReview;
+  const { reviewer, review } = userReview;
+
   return (
     <div className="mt-2">
       <p>
@@ -17,7 +15,7 @@ const Review = ({ userReview }: IProps) => {
       </p>
       <p className="">
         <span className="  italic text-black text-opacity-60">By </span>
-        <span>{reviewer}</span>
+        <span>{reviewer?.name}</span>
       </p>
     </div>
   );

@@ -1,35 +1,52 @@
-import { Link } from "react-router-dom";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Link, useParams } from "react-router-dom";
 import { AiOutlineDelete } from "react-icons/ai";
 import { VscSend } from "react-icons/vsc";
 import Review from "./Review";
+import {
+  useGetSingleBookQuery,
+  usePostReviewMutation,
+} from "../../redux/api/apiSlice";
+import { IBook } from "../home/TopTenBooks/TopTenBooks";
+import { formateDate } from "./dateFormate";
+import { useForm } from "react-hook-form";
 
 const BookDetails = () => {
-  const user = "d";
+  const { id } = useParams();
+  const { data, isLoading } = useGetSingleBookQuery(id);
+  const [postReview, { isLoading: postLoading, isError }] =
+    usePostReviewMutation();
 
-  const comicBook = {
-    _id: "e",
-    title: "Spider-Man: The Amazing Spider-Man",
-    author: "Stan Lee",
-    image:
-      "https://cdn.marvel.com/u/prod/marvel/i/mg/7/30/6259cb878dd80/clean.jpg",
-    genre: "Superhero",
-    publicationDate: "March 1963",
-    reviews: [
-      {
-        reviewer: "Najmul",
-        reviewerEmail: "naz@hubmail.com",
-        review: "Its fantastic",
-      },
-    ],
+  let bookInfo: IBook = {} as IBook;
+  if (data?.data) {
+    bookInfo = data.data;
+  }
+
+  const { _id, title, author, bookCover, genre, publishedDate, reviews } =
+    bookInfo;
+
+  const dateObj = new Date(publishedDate);
+  const newPublishedDate = formateDate(dateObj);
+
+  const { register, handleSubmit, errors, watch } = useForm();
+  const review = watch("review");
+
+  const onSubmit = async (data: any) => {
+    const res = await postReview({ id, data });
+    console.log(res);
   };
-  const { _id, title, author, image, genre, publicationDate, reviews } =
-    comicBook;
+
+  const user = "d";
 
   return (
     <div>
       <div className="container h-screen  mx-auto flex p-16">
         <div className="w-1/2 lg:h-[700px] flex justify-center items-center">
-          <img src={image} alt="" className="w-96 h-[600px]  rounded-lg " />
+          <img
+            src={bookCover?.photoUrl}
+            alt=""
+            className="w-96 h-[600px]  rounded-lg "
+          />
         </div>
         <div className="w-1/2 p-5">
           <div className="flex justify-end gap-10 ">
@@ -63,23 +80,32 @@ const BookDetails = () => {
                 <span className="  text-xl text-black text-opacity-60">
                   Punlication Date{" "}
                 </span>
-                <span className="text-2xl font-medium ">{publicationDate}</span>
+                <span className="text-2xl font-medium ">
+                  {newPublishedDate}
+                </span>
               </p>
               <div className="bg-base-200 p-5  rounded-sm flex flex-col gap-4">
                 <h4 className="text-2xl font-semibold">Reviews</h4>
-                <div className="flex gap-5 ">
-                  <input
-                    type="text"
-                    placeholder="Write review here"
-                    className="input input-bordered w-full rounded-sm"
-                  />
-                  <button className="btn rounded-sm  group hover:text-orange-500">
-                    <VscSend className={"text-2xl text-orange-500"} />
-                    Post review
-                  </button>
-                </div>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <div className="flex gap-5 ">
+                    <input
+                      type="text"
+                      {...register("review", { required: true })}
+                      placeholder="Write review here"
+                      className="input input-bordered w-full rounded-sm"
+                    />
+                    <button
+                      type="submit"
+                      disabled={!review}
+                      className="btn rounded-sm  group hover:text-orange-500"
+                    >
+                      <VscSend className={"text-2xl text-orange-500"} />
+                      Post review
+                    </button>
+                  </div>
+                </form>
                 <div>
-                  {reviews.length > 0 &&
+                  {reviews?.length > 0 &&
                     reviews.map((review, index) => (
                       <Review key={index} userReview={review} />
                     ))}
