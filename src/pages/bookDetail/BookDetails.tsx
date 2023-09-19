@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { AiOutlineDelete } from "react-icons/ai";
 import { VscSend } from "react-icons/vsc";
 import Review from "./Review";
@@ -13,21 +13,22 @@ import { IBook } from "../home/TopTenBooks/TopTenBooks";
 import { formateDate } from "./dateFormate";
 import { useForm } from "react-hook-form";
 import { useAppSelector } from "../../redux/hook";
+import toast from "react-hot-toast";
 
 const BookDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
-  const { register, handleSubmit, errors, watch } = useForm();
+  const { register, handleSubmit, watch, reset } = useForm();
 
   const { user } = useAppSelector((state) => state.user);
   const { accessToken } = useAppSelector((state) => state.accessToken);
 
-  const { data, isLoading } = useGetSingleBookQuery(id, {
+  const { data } = useGetSingleBookQuery(id, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 3000,
   });
-  const [postReview, { isLoading: postLoading, isError }] =
-    usePostReviewMutation();
+  const [postReview, { isLoading: postLoading }] = usePostReviewMutation();
   const [deleteBook] = useDeleteBookMutation();
   const [addToWishList] = useAddToWishListMutation();
 
@@ -45,16 +46,30 @@ const BookDetails = () => {
   const newPublishedDate = formateDate(dateObj);
 
   const onSubmit = async (data: any) => {
-    const response = await postReview({ id, data, accessToken });
+    const response = (await postReview({ id, data, accessToken })) as any;
+    if (response.data) {
+      reset();
+      toast.success("Thanks for the feedback");
+    }
+    if (response.error) toast.error(response.error.data.message);
   };
 
   const handleDelete = async () => {
-    const response = await deleteBook({ id, accessToken });
-    console.log(response);
+    const response = (await deleteBook({ id, accessToken })) as any;
+
+    if (response.data) {
+      toast.success("Book deleted successfully");
+      navigate("/");
+    }
+
+    if (response.error) toast.error(response.error.data.message);
   };
   const handleAddToWishlist = async () => {
-    const response = await addToWishList({ id, accessToken });
-    console.log(response);
+    const response = (await addToWishList({ id, accessToken })) as any;
+
+    if (response.data) toast.success("Book added to wishlist");
+
+    if (response.error) toast.error(response.error.data.message);
   };
 
   return (
@@ -120,7 +135,7 @@ const BookDetails = () => {
                     />
                     <button
                       type="submit"
-                      disabled={!review}
+                      disabled={!review || postLoading}
                       className="btn rounded-sm  group hover:text-orange-500"
                     >
                       <VscSend className={"text-2xl text-orange-500"} />

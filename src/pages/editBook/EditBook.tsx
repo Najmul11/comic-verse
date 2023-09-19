@@ -1,8 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ChangeEvent } from "react";
 import { useAppSelector } from "../../redux/hook";
-import { useEditBookMutation } from "../../redux/api/apiSlice";
+import {
+  useEditBookMutation,
+  useGetSingleBookQuery,
+} from "../../redux/api/apiSlice";
 import { useParams } from "react-router-dom";
+import { IBook } from "../home/TopTenBooks/TopTenBooks";
+import toast from "react-hot-toast";
 
 type IFormData = {
   author: string;
@@ -14,10 +20,18 @@ type IFormData = {
 
 const EditBook = () => {
   const { id } = useParams();
-  const { control, handleSubmit, setValue, watch } = useForm();
+  const { control, handleSubmit, setValue, watch, reset } = useForm();
 
-  const [editBook] = useEditBookMutation();
+  const [editBook, { isLoading }] = useEditBookMutation();
+  const { data } = useGetSingleBookQuery(id);
   const { accessToken } = useAppSelector((state) => state.accessToken);
+
+  let bookInfo: IBook = {} as IBook;
+  if (data?.data) {
+    bookInfo = data.data;
+  }
+
+  const { title, author, genre, publishedDate } = bookInfo;
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files![0];
@@ -32,19 +46,24 @@ const EditBook = () => {
   const imagePreview = watch("imagePreview");
 
   const onSubmit: SubmitHandler<IFormData> = async (data) => {
-    try {
-      console.log(data);
-      const formData = new FormData();
+    const formData = new FormData();
 
-      formData.append("author", data.author);
-      formData.append("title", data.title);
-      formData.append("genre", data.genre);
-      formData.append("publishedDate", data.publishedDate);
-      formData.append("file", data.image);
+    formData.append("title", data.title);
+    formData.append("genre", data.genre);
+    formData.append("publishedDate", data.publishedDate);
+    formData.append("file", data.image);
 
-      const response = await editBook({ id, data: formData, accessToken });
-      console.log(response);
-    } catch (error) {}
+    const response = (await editBook({
+      id,
+      data: formData,
+      accessToken,
+    })) as any;
+
+    if (response.data) {
+      reset();
+      toast.success("Book info updated successfully");
+    }
+    if (response.error) toast.error(response.error.data.message);
   };
 
   return (
@@ -75,7 +94,7 @@ const EditBook = () => {
                 <Controller
                   name="title"
                   control={control}
-                  defaultValue=""
+                  defaultValue={title}
                   render={({ field }) => (
                     <input
                       {...field}
@@ -93,7 +112,7 @@ const EditBook = () => {
                 <Controller
                   name="author"
                   control={control}
-                  defaultValue=""
+                  defaultValue={author}
                   render={({ field }) => (
                     <input
                       {...field}
@@ -111,7 +130,7 @@ const EditBook = () => {
                 <Controller
                   name="genre"
                   control={control}
-                  defaultValue=""
+                  defaultValue={genre}
                   render={({ field }) => (
                     <input
                       {...field}
@@ -129,7 +148,7 @@ const EditBook = () => {
                 <Controller
                   name="publishedDate"
                   control={control}
-                  defaultValue=""
+                  defaultValue={publishedDate}
                   render={({ field }) => (
                     <input
                       {...field}
@@ -140,7 +159,11 @@ const EditBook = () => {
                   )}
                 />
               </div>
-              <button type="submit" className=" btn mb-4 mt-8">
+              <button
+                disabled={isLoading}
+                type="submit"
+                className=" btn mb-4 mt-8"
+              >
                 update book
               </button>
             </form>
