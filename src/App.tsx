@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import jwtDecode from "jwt-decode";
 import { useAppDispatch, useAppSelector } from "./redux/hook";
 import { setUser } from "./redux/slices/userSlice";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -28,6 +29,7 @@ function App() {
 
   return (
     <div className={darkMode ? "dark" : ""}>
+      <Toaster />
       <ScrollRestoration
         getKey={(location) => {
           return location.pathname;

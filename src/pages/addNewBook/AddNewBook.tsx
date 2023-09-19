@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ChangeEvent } from "react";
 import { useAppSelector } from "../../redux/hook";
 import { useListNewBookMutation } from "../../redux/api/apiSlice";
+import toast from "react-hot-toast";
 
 type IFormData = {
   author: string;
@@ -12,10 +14,10 @@ type IFormData = {
 };
 
 const AddNewBook = () => {
-  const { control, handleSubmit, setValue, watch } = useForm();
+  const { control, handleSubmit, setValue, watch, reset } = useForm();
 
   const { accessToken } = useAppSelector((state) => state.accessToken);
-  const [listNewBook] = useListNewBookMutation();
+  const [listNewBook, { isLoading }] = useListNewBookMutation();
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files![0];
@@ -30,21 +32,24 @@ const AddNewBook = () => {
   const imagePreview = watch("imagePreview");
 
   const onSubmit: SubmitHandler<IFormData> = async (data) => {
-    try {
-      console.log(data);
-      const formData = new FormData();
+    const formData = new FormData();
 
-      formData.append("author", data.author);
-      formData.append("title", data.title);
-      formData.append("genre", data.genre);
-      formData.append("publishedDate", data.publishedDate);
-      formData.append("file", data.image);
+    formData.append("author", data.author);
+    formData.append("title", data.title);
+    formData.append("genre", data.genre);
+    formData.append("publishedDate", data.publishedDate);
+    formData.append("file", data.image);
 
-      console.log(formData);
+    const response = (await listNewBook({
+      data: formData,
+      accessToken,
+    })) as any;
 
-      const response = await listNewBook({ data: formData, accessToken });
-      console.log(response);
-    } catch (error) {}
+    if (response.data) {
+      reset();
+      toast.success("Book added successfully");
+    }
+    if (response.error) toast.error(response.error.data.message);
   };
 
   return (
@@ -140,7 +145,11 @@ const AddNewBook = () => {
                   )}
                 />
               </div>
-              <button type="submit" className=" btn mb-4 mt-8">
+              <button
+                disabled={isLoading}
+                type="submit"
+                className=" btn mb-4 mt-8"
+              >
                 Add book
               </button>
             </form>

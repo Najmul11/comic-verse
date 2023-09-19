@@ -22,7 +22,10 @@ const BookDetails = () => {
   const { user } = useAppSelector((state) => state.user);
   const { accessToken } = useAppSelector((state) => state.accessToken);
 
-  const { data, isLoading } = useGetSingleBookQuery(id);
+  const { data, isLoading } = useGetSingleBookQuery(id, {
+    refetchOnMountOrArgChange: true,
+    pollingInterval: 3000,
+  });
   const [postReview, { isLoading: postLoading, isError }] =
     usePostReviewMutation();
   const [deleteBook] = useDeleteBookMutation();

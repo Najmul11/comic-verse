@@ -6,6 +6,7 @@ export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000/api/v1",
+    // learned this later, no need to send header everytime if we set prepare header, headers will be attached by default
     prepareHeaders: (headers, { getState }) => {
       const state = getState() as RootState;
       const accessToken = selectAccessToken(state);
@@ -15,10 +16,14 @@ export const api = createApi({
       return headers;
     },
   }),
+  tagTypes: ["wishlist", "books"],
   endpoints: (builder) => ({
     getAllBooks: builder.query({
-      query: (queryParams) =>
-        `/books?${new URLSearchParams(queryParams).toString()}`,
+      query: (queryParams) => ({
+        url: `/books?${new URLSearchParams(queryParams).toString()}`,
+        method: "GET",
+      }),
+      providesTags: ["books"],
     }),
 
     listNewBook: builder.mutation({
@@ -30,6 +35,7 @@ export const api = createApi({
           Authorization: accessToken,
         },
       }),
+      invalidatesTags: ["books"],
     }),
 
     editBook: builder.mutation({
@@ -41,6 +47,7 @@ export const api = createApi({
           Authorization: accessToken,
         },
       }),
+      invalidatesTags: ["books"],
     }),
 
     deleteBook: builder.mutation({
@@ -51,10 +58,15 @@ export const api = createApi({
           Authorization: accessToken,
         },
       }),
+      invalidatesTags: ["books"],
     }),
 
     getSingleBook: builder.query({
-      query: (id) => `/books/${id}`,
+      query: (id) => ({
+        url: `/books/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["books"],
     }),
 
     postReview: builder.mutation({
@@ -66,6 +78,7 @@ export const api = createApi({
           Authorization: accessToken,
         },
       }),
+      invalidatesTags: ["books"],
     }),
 
     addToWishList: builder.mutation({
@@ -76,6 +89,7 @@ export const api = createApi({
           Authorization: accessToken,
         },
       }),
+      invalidatesTags: ["wishlist"],
     }),
 
     deleteFromWishlist: builder.mutation({
@@ -86,6 +100,7 @@ export const api = createApi({
           Authorization: accessToken,
         },
       }),
+      invalidatesTags: ["wishlist"],
     }),
 
     createUser: builder.mutation({
@@ -112,6 +127,7 @@ export const api = createApi({
           Authorization: accessToken,
         },
       }),
+      providesTags: ["wishlist"],
     }),
   }),
 });

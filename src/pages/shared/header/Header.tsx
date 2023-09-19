@@ -7,10 +7,12 @@ import "./Header.css";
 import WishLists from "../wishList/WishLists";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import { setDark, setLight } from "../../../redux/slices/darkModeSlice";
+import { useGetProfileQuery } from "../../../redux/api/apiSlice";
 
 const Header = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
+  const { data } = useGetProfileQuery(undefined);
   const { darkMode } = useAppSelector((state) => state.darkMode);
 
   const menuClass = "btn  btn-ghost hover:bg-base-200 lg:px-6 rounded-sm";
@@ -82,7 +84,7 @@ const Header = () => {
                     className="btn btn-ghost btn-circle avatar"
                   >
                     <div className="w-10 rounded-full">
-                      <img src={"hh"} />
+                      <img src={data?.data?.avatar?.photoUrl} />
                     </div>
                   </label>
                   <ul
