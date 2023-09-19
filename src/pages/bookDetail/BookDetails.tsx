@@ -14,6 +14,7 @@ import { formateDate } from "./dateFormate";
 import { useForm } from "react-hook-form";
 import { useAppSelector } from "../../redux/hook";
 import toast from "react-hot-toast";
+import DeleteModal from "./DeleteModal";
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -29,7 +30,7 @@ const BookDetails = () => {
     pollingInterval: 3000,
   });
   const [postReview, { isLoading: postLoading }] = usePostReviewMutation();
-  const [deleteBook] = useDeleteBookMutation();
+  const [deleteBook, { isLoading: deleteLoading }] = useDeleteBookMutation();
   const [addToWishList] = useAddToWishListMutation();
 
   const review = watch("review");
@@ -59,7 +60,7 @@ const BookDetails = () => {
 
     if (response.data) {
       toast.success("Book deleted successfully");
-      navigate("/");
+      navigate("/all-books");
     }
 
     if (response.error) toast.error(response.error.data.message);
@@ -95,28 +96,29 @@ const BookDetails = () => {
             <Link to={`/edit-book/${_id}`} className="btn rounded-sm">
               Edit Book
             </Link>
-            <button onClick={handleDelete} className="btn rounded-sm group">
+            <label htmlFor="delete-modal" className="btn rounded-sm group">
+              {" "}
               <AiOutlineDelete className={"text-xl group-hover:fill-red-600"} />
-              delete
-            </button>
+              delete{" "}
+            </label>
           </div>
           <div className="px-5 py-10">
             <div className="flex flex-col gap-4">
               <h2 className=" text-3xl font-semibold">{title}</h2>
               <p className="">
-                <span className="  text-xl text-black text-opacity-60">
-                  Author{" "}
+                <span className="italic  text-xl text-black text-opacity-60">
+                  By{" "}
                 </span>
-                <span className="italic text-2xl font-medium ">{author}</span>
+                <span className=" text-2xl font-medium ">{author}</span>
               </p>
               <p className="">
-                <span className="  text-xl text-black text-opacity-60">
+                <span className="italic  text-xl text-black text-opacity-60">
                   Genre{" "}
                 </span>
                 <span className="text-2xl font-medium ">{genre}</span>
               </p>
               <p className="">
-                <span className="  text-xl text-black text-opacity-60">
+                <span className="italic  text-xl text-black text-opacity-60">
                   Punlication Date{" "}
                 </span>
                 <span className="text-2xl font-medium ">
@@ -154,6 +156,7 @@ const BookDetails = () => {
           </div>
         </div>
       </div>
+      <DeleteModal handleDelete={handleDelete} deleteLoading={deleteLoading} />
     </div>
   );
 };
