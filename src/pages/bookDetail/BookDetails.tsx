@@ -15,10 +15,12 @@ import { useForm } from "react-hook-form";
 import { useAppSelector } from "../../redux/hook";
 import toast from "react-hot-toast";
 import DeleteModal from "./DeleteModal";
+import useTitle from "../../hooks/useTitle";
 
 const BookDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  useTitle("Book details");
 
   const { register, handleSubmit, watch, reset } = useForm();
 
@@ -104,18 +106,20 @@ const BookDetails = () => {
           </div>
           <div className="px-5 py-10">
             <div className="flex flex-col gap-4">
-              <h2 className=" text-3xl font-semibold">{title}</h2>
+              <h2 className=" text-3xl font-semibold capitalize">{title}</h2>
               <p className="">
                 <span className="italic  text-xl text-black text-opacity-60">
                   By{" "}
                 </span>
-                <span className=" text-2xl font-medium ">{author}</span>
+                <span className=" text-2xl font-medium capitalize">
+                  {author}
+                </span>
               </p>
               <p className="">
                 <span className="italic  text-xl text-black text-opacity-60">
                   Genre{" "}
                 </span>
-                <span className="text-2xl font-medium ">{genre}</span>
+                <span className="text-2xl font-medium capitalize">{genre}</span>
               </p>
               <p className="">
                 <span className="italic  text-xl text-black text-opacity-60">

@@ -3,10 +3,45 @@ import { useState } from "react";
 import Pagination from "./Pagination/Pagination";
 import Sidebar from "./Sidebar/Sidebar";
 import { IBook } from "../home/TopTenBooks/TopTenBooks";
-import { useGetAllBooksQuery } from "../../redux/api/apiSlice";
+import { useGetBooksQuery } from "../../redux/api/apiSlice";
+import useTitle from "../../hooks/useTitle";
 
 const AllBooks = () => {
-  const { data, error, isLoading } = useGetAllBooksQuery(undefined);
+  useTitle("All books");
+  // const { data, error, isLoading } = useGetAllBooksQuery(undefined);
+
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [selectedYears, setSelectedYears] = useState<number[]>([]);
+  const [searchText, setSearchText] = useState<string>("");
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.value);
+
+    setSearchText(event.target.value);
+  };
+
+  // Handle checkbox changes
+  const handleGenreChange = (genre: string): void => {
+    if (selectedGenres.includes(genre)) {
+      setSelectedGenres(selectedGenres.filter((g) => g !== genre));
+    } else {
+      setSelectedGenres([...selectedGenres, genre]);
+    }
+  };
+
+  const handleYearChange = (year: number): void => {
+    if (selectedYears.includes(year)) {
+      setSelectedYears(selectedYears.filter((y) => y !== year));
+    } else {
+      setSelectedYears([...selectedYears, year]);
+    }
+  };
+
+  const { data } = useGetBooksQuery({
+    genres: selectedGenres,
+    years: selectedYears,
+    searchTerm: searchText,
+  });
 
   const totalPages = 10;
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,7 +54,14 @@ const AllBooks = () => {
     <div>
       <div className="container mx-auto  flex gap-5 py-12">
         <div className="w-1/4">
-          <Sidebar />
+          <Sidebar
+            selectedGenres={selectedGenres}
+            selectedYears={selectedYears}
+            handleGenreChange={handleGenreChange}
+            handleYearChange={handleYearChange}
+            handleSearch={handleSearch}
+            searchText={searchText}
+          />
         </div>
         <div className="w-3/4   rounded-lg">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center gap-5">

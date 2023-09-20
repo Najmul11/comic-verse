@@ -25,6 +25,33 @@ export const api = createApi({
       }),
       providesTags: ["books"],
     }),
+    // here getBooks and getAllBooks serving same purpose, for queries customiazing the endpoint here
+    getBooks: builder.query({
+      query: ({ genres, years, searchTerm }) => {
+        // Construct the query parameters based on selected genres and years
+        const queryParams: string[] = [];
+
+        if (searchTerm)
+          queryParams.push(`searchTerm=${encodeURIComponent(searchTerm)}`);
+
+        if (genres.length > 0) {
+          genres.forEach((genre: string) => {
+            queryParams.push(`genre=${encodeURIComponent(genre)}`);
+          });
+        }
+        if (years.length > 0) {
+          years.forEach((year: number) => {
+            queryParams.push(`year=${year}`);
+          });
+        }
+
+        // Construct the final URL with query parameters
+        const url = `/books?${queryParams.join("&")}`;
+        console.log(url);
+        return url;
+      },
+      providesTags: ["books"],
+    }),
 
     listNewBook: builder.mutation({
       query: ({ data, accessToken }) => ({
@@ -144,4 +171,26 @@ export const {
   useCreateUserMutation,
   useGetProfileQuery,
   useDeleteFromWishlistMutation,
+  useGetBooksQuery,
 } = api;
+
+// getBooks: builder.query({
+//   query: ({ genres, years }) => {
+//     // Construct the query parameters based on selected genres and years
+//     const queryParams = [];
+
+//     if (genres.length > 0) {
+//       console.log("inside");
+
+//       queryParams.push(`genres=${genres.join(",")}`);
+//     }
+//     if (years.length > 0) {
+//       queryParams.push(`years=${years.join(",")}`);
+//     }
+
+//     // Construct the final URL with query parameters
+//     const url = `/books?${queryParams.join("&")}`;
+//     console.log(url);
+//     return url;
+//   },
+// }),

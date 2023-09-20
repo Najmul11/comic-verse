@@ -1,20 +1,22 @@
-const Sidebar = () => {
-  const years = [
-    2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023,
-  ];
-  const genres = [
-    "Superhero",
-    "Science Fiction",
-    "Fantasy",
-    "Horror",
-    "Crime/Noir",
-    "Mystery",
-    "Historical",
-    "Romance",
-    "Comedy",
-    "Adventure",
-  ];
+import { genres, years } from "./sidebar.constant";
 
+type IProps = {
+  selectedGenres: string[];
+  selectedYears: number[];
+  handleGenreChange: (genre: string) => void;
+  handleYearChange: (year: number) => void;
+  handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  searchText: string;
+};
+
+const Sidebar = ({
+  selectedGenres,
+  selectedYears,
+  handleGenreChange,
+  handleYearChange,
+  handleSearch,
+  searchText,
+}: IProps) => {
   return (
     <div className=" rounded-lg flex flex-col gap-5">
       <div>
@@ -25,6 +27,7 @@ const Sidebar = () => {
           type="text"
           placeholder="Search by title, author, genre"
           className="input input-bordered w-full rounded-md"
+          onChange={handleSearch}
         />
       </div>
       <div className="flex flex-col gap-y-3">
@@ -36,7 +39,9 @@ const Sidebar = () => {
                 type="checkbox"
                 className="checkbox rounded-sm checkbox-xs  "
                 id={genre}
-                name="2020"
+                name="genre"
+                checked={selectedGenres.includes(genre)}
+                onChange={() => handleGenreChange(genre)}
               />
               <label
                 htmlFor={genre}
@@ -57,7 +62,9 @@ const Sidebar = () => {
                 type="checkbox"
                 className="checkbox rounded-sm checkbox-xs  "
                 id={`year-${year}`}
-                name="2020"
+                name="year"
+                checked={selectedYears.includes(year)}
+                onChange={() => handleYearChange(year)}
               />
               <label
                 htmlFor={`year-${year}`}
