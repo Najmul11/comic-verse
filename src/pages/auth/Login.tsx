@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useUserLoginMutation } from "../../redux/api/apiSlice";
@@ -6,6 +7,7 @@ import { setAccessToken } from "../../redux/slices/accessTokenSlice";
 import { setUser } from "../../redux/slices/userSlice";
 import jwtDecode from "jwt-decode";
 import useTitle from "../../hooks/useTitle";
+import toast from "react-hot-toast";
 
 type IFormData = {
   email: string;
@@ -14,7 +16,7 @@ type IFormData = {
 
 export const Login = () => {
   useTitle("Login");
-  const [userLogin] = useUserLoginMutation();
+  const [userLogin, { isLoading }] = useUserLoginMutation();
   const { handleSubmit, control, watch } = useForm<IFormData>();
 
   const location = useLocation();
@@ -23,25 +25,22 @@ export const Login = () => {
 
   const dispatch = useAppDispatch();
   const onSubmit: SubmitHandler<IFormData> = async (data) => {
-    try {
-      const response = await userLogin(data);
-      if ("data" in response) {
-        const accessToken = response.data?.data?.accessToken;
-        await dispatch(setAccessToken(accessToken));
-        const decodedToken = jwtDecode(accessToken);
-        await dispatch(setUser(decodedToken));
-        navigate(from, { replace: true });
-      }
-    } catch (error) {
-      console.log(error);
+    const response = (await userLogin(data)) as any;
+    if ("data" in response) {
+      const accessToken = response.data?.data?.accessToken;
+      await dispatch(setAccessToken(accessToken));
+      const decodedToken = jwtDecode(accessToken);
+      await dispatch(setUser(decodedToken));
+      navigate(from, { replace: true });
     }
+    if (response.error) toast.error(response.error.data.message);
   };
   const password = watch("password");
   const email = watch("email");
   return (
     <div className="bg-base-200 min-h-screen dark:bg-black">
       <div className="container mx-auto flex justify-center items-center">
-        <div className="lg:pt-32 pt-10">
+        <div className="lg:pt-32 pt-20">
           <h2 className="text-5xl font-bold text-center pb-8 dark:text-white">
             Login now!
           </h2>
@@ -97,7 +96,7 @@ export const Login = () => {
             </div>
             <button
               type="submit"
-              disabled={!password || !email}
+              disabled={!password || !email || isLoading}
               className=" btn mb-4"
             >
               Login

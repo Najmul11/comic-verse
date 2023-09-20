@@ -77,7 +77,7 @@ const EditBook = () => {
           <h2 className="text-5xl font-bold text-center pb-8 dark:text-white">
             Update book
           </h2>
-          <div className="flex  bg-white rounded-lg">
+          <div className="flex flex-col-reverse lg:flex-row bg-white rounded-lg">
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="w-[430px]  bg-white rounded-lg py-6 px-8 flex flex-col "
@@ -174,11 +174,11 @@ const EditBook = () => {
               </button>
             </form>
             {imagePreview && (
-              <div className="py-10 pr-8  ">
+              <div className="py-10 lg:pr-8 mx-2 lg:mx-0">
                 <img
                   src={imagePreview}
                   alt=""
-                  className="w-80 h-[480px]  rounded-lg"
+                  className="lg:w-80 h-[480px]  rounded-lg w-full "
                 />
               </div>
             )}

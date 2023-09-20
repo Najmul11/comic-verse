@@ -77,39 +77,37 @@ const BookDetails = () => {
 
   return (
     <div className="dark:bg-black dark:text-white">
-      <div className="container h-screen  mx-auto flex p-16">
-        <div className="w-1/2 lg:h-[700px] flex justify-center items-center">
+      <div className="container min-h-screen  mx-auto lg:flex  lg:p-16">
+        <div className="lg:w-1/2 lg:h-[700px] lg:flex justify-center items-center px-1">
           <img
             src={bookCover?.photoUrl}
             alt=""
-            className="w-96 h-[600px]  rounded-lg "
+            className="lg:w-96 lg:h-[600px] h-[550px] w-full  rounded-lg "
           />
         </div>
-        <div className="w-1/2 p-5">
-          <div className="flex justify-end gap-10 ">
-            {user && (
-              <>
-                <button
-                  onClick={handleAddToWishlist}
-                  className="btn rounded-sm group"
-                >
-                  Add to wishList
-                </button>
+        <div className="lg:w-1/2 lg:p-5 py-5">
+          {user && (
+            <div className="flex lg:justify-end justify-between px-1">
+              <button
+                onClick={handleAddToWishlist}
+                className="btn rounded-sm group"
+              >
+                Add to wishList
+              </button>
 
-                <Link to={`/edit-book/${_id}`} className="btn rounded-sm">
-                  Edit Book
-                </Link>
-                <label htmlFor="delete-modal" className="btn rounded-sm group">
-                  {" "}
-                  <AiOutlineDelete
-                    className={"text-xl group-hover:fill-red-600"}
-                  />
-                  delete{" "}
-                </label>
-              </>
-            )}
-          </div>
-          <div className="px-5 py-10">
+              <Link to={`/edit-book/${_id}`} className="btn rounded-sm">
+                Edit Book
+              </Link>
+              <label htmlFor="delete-modal" className="btn rounded-sm group">
+                {" "}
+                <AiOutlineDelete
+                  className={"text-xl group-hover:fill-red-600"}
+                />
+                delete{" "}
+              </label>
+            </div>
+          )}
+          <div className="px-2 lg:px-5 py-10">
             <div className="flex flex-col gap-4">
               <h2 className=" text-3xl font-semibold capitalize">{title}</h2>
               <p className="">
@@ -149,7 +147,7 @@ const BookDetails = () => {
                     <button
                       type="submit"
                       disabled={!review || postLoading}
-                      className="btn rounded-sm  group hover:text-orange-500"
+                      className="btn rounded-sm  group hover:text-orange-500 "
                     >
                       <VscSend className={"text-2xl text-orange-500"} />
                       Post review

@@ -16,7 +16,7 @@ const Slider = () => {
   };
   return (
     <div className="px-2 lg:px-0">
-      <div className="container bg-blue-300 mx-auto lg:h-[700px] rounded-md overflow-hidden relative">
+      <div className="container bg-blue-300 mx-auto h-[250px] lg:h-[700px] rounded-md overflow-hidden relative">
         <SlickSlider {...settings}>
           {sliderData.map((slide, i) => (
             <Slide key={i} slide={slide}></Slide>

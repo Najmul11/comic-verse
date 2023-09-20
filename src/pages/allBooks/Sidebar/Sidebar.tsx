@@ -28,7 +28,7 @@ const Sidebar = ({
           onChange={handleSearch}
         />
       </div>
-      <div className="flex flex-col gap-y-3">
+      <div className="md:flex flex-col gap-y-3 hidden">
         <h3 className="text-lg font-semibold">Filter By Genre</h3>
         <div className="grid grid-cols-2 ">
           {genres.map((genre, index) => (
@@ -51,7 +51,7 @@ const Sidebar = ({
           ))}
         </div>
       </div>
-      <div className="flex flex-col gap-y-3">
+      <div className="md:flex flex-col gap-y-3 hidden">
         <h3 className="text-lg font-semibold">Filter By year</h3>
         <div className="grid grid-cols-3 ">
           {years.map((year, index) => (

@@ -5,7 +5,7 @@ import { RootState } from "../store";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://book-catalog-server-alpha.vercel.app/api/v1",
+    baseUrl: "http://localhost:5000/api/v1",
     // learned this later, no need to send header everytime if we set prepare header, headers will be attached by default
     prepareHeaders: (headers, { getState }) => {
       const state = getState() as RootState;

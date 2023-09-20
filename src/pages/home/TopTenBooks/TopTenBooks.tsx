@@ -27,17 +27,17 @@ const TopTenBooks = () => {
 
   return (
     <div>
-      <div className="container  mx-auto ">
-        <div className="lg:pt-20 lg:pb-10">
-          <h2 className="text-5xl font-bold py-2 text-black dark:text-white">
+      <div className="container  mx-auto px-2 pb-5">
+        <div className="py-8 lg:pt-20 lg:pb-10">
+          <h2 className="text-3xl lg:text-5xl font-bold py-2 text-black dark:text-white">
             People's Choice Best Ten
           </h2>
         </div>
-        <div className=" grid grid-cols-4 gap-10 justify-center  items-center lg:pb-20">
+        <div className=" grid  lg:grid-cols-4 gap-4 lg:gap-10 justify-center  items-center lg:pb-20">
           {data?.data?.data.map((book: IBook, index: number) => (
             <SingleBook key={index} book={book} index={index + 1}></SingleBook>
           ))}
-          <div>
+          <div className="text-center lg:text-left">
             <Link to={"/all-books"} className="btn rounded-sm">
               View All
             </Link>

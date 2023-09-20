@@ -48,8 +48,8 @@ const AllBooks = () => {
   return (
     <div className="dark:bg-black">
       <div className="container mx-auto   py-12">
-        <div className="flex gap-5">
-          <div className="w-1/4">
+        <div className="flex gap-5 flex-col lg:flex-row">
+          <div className="lg:w-1/4 w-full px-1 lg:px-0">
             <Sidebar
               selectedGenres={selectedGenres}
               selectedYears={selectedYears}
@@ -58,7 +58,7 @@ const AllBooks = () => {
               handleSearch={handleSearch}
             />
           </div>
-          <div className="w-3/4   rounded-lg">
+          <div className="lg:w-3/4   rounded-lg w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center gap-5">
               {data?.data?.data.map((book: IBook, index: number) => {
                 const { genre, publishedDate } = book;

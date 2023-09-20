@@ -28,7 +28,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className={darkMode ? "dark" : ""}>
+    <div className={`${darkMode ? "dark" : ""}`}>
       <Toaster />
       <ScrollRestoration
         getKey={(location) => {

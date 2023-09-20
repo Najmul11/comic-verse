@@ -16,7 +16,7 @@ const SingleBook = ({ book, index, children }: IProps) => {
     <Link
       to={`/all-books/${_id}`}
       className={`relative group rounded-lg ${
-        index ? "lg:h-[570px]" : "lg:h-[400px]"
+        index ? "lg:h-[570px] h-[450px]" : "lg:h-[400px]"
       }`}
     >
       <div className="overflow-hidden rounded-lg shadow-lg ">
@@ -24,7 +24,7 @@ const SingleBook = ({ book, index, children }: IProps) => {
           src={photoUrl}
           alt={title}
           className={` w-full transition-transform transform group-hover:scale-105 rounded-lg ${
-            index ? "lg:h-[570px]" : "lg:h-[400px]"
+            index ? "lg:h-[570px] h-[450px]" : "h-[400px] "
           }`}
         />
       </div>
