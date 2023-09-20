@@ -8,6 +8,8 @@ import WishLists from "../wishList/WishLists";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import { setDark, setLight } from "../../../redux/slices/darkModeSlice";
 import { useGetProfileQuery } from "../../../redux/api/apiSlice";
+import { clearUser } from "../../../redux/slices/userSlice";
+import { clearAccessToken } from "../../../redux/slices/accessTokenSlice";
 
 const Header = () => {
   const dispatch = useAppDispatch();
@@ -15,10 +17,15 @@ const Header = () => {
   const { data } = useGetProfileQuery(undefined);
   const { darkMode } = useAppSelector((state) => state.darkMode);
 
+  const handleLogout = async () => {
+    await dispatch(clearUser());
+    await dispatch(clearAccessToken());
+  };
+
   const menuClass = "btn  btn-ghost hover:bg-base-200 lg:px-6 rounded-sm";
   const menu = (
     <>
-      <NavLink to={"/all-books"} className={menuClass}>
+      <NavLink to={"/all-books"} className={menuClass} end>
         All Books
       </NavLink>
       {user ? (
@@ -53,7 +60,7 @@ const Header = () => {
     </>
   );
   return (
-    <div className=" shadow-sm  w-full bg-white z-10 sticky top-0">
+    <div className=" shadow-sm  w-full bg-white z-10 sticky top-0 dark:bg-black dark:text-orange-500">
       <div className="container mx-auto">
         <div className="navbar ">
           <div className="navbar-start">
@@ -99,7 +106,10 @@ const Header = () => {
                     </li>
                   </ul>
                 </div>
-                <button className={`btn rounded-sm  border-0 group`}>
+                <button
+                  className={`btn rounded-sm  border-0 group`}
+                  onClick={handleLogout}
+                >
                   <span className="text-xl">
                     <FiLogOut className={"group-hover:text-orange-500"} />
                   </span>

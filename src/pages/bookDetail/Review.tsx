@@ -8,7 +8,7 @@ const Review = ({ userReview }: IProps) => {
   const { reviewer, review } = userReview;
 
   return (
-    <div className="mt-2">
+    <div className="mt-2 dark:text-black">
       <p>
         <span className="text-orange-500 font-semibold text-3xl">~ </span>
         {review}

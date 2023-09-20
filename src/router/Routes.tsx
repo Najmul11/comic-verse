@@ -8,6 +8,7 @@ import { Login } from "../pages/auth/Login";
 import { Register } from "../pages/auth/Register";
 import BookDetails from "../pages/bookDetail/BookDetails";
 import EditBook from "../pages/editBook/EditBook";
+import NotFound from "../pages/notFound/NotFound";
 
 export const router = createBrowserRouter([
   {
@@ -49,5 +50,9 @@ export const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);

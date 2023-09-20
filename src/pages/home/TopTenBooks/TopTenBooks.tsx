@@ -23,13 +23,13 @@ export type IBook = {
 };
 
 const TopTenBooks = () => {
-  const { data, error, isLoading } = useGetAllBooksQuery(undefined);
+  const { data } = useGetAllBooksQuery(undefined);
 
   return (
     <div>
       <div className="container  mx-auto ">
         <div className="lg:pt-20 lg:pb-10">
-          <h2 className="text-5xl font-bold py-2 text-black ">
+          <h2 className="text-5xl font-bold py-2 text-black dark:text-white">
             People's Choice Best Ten
           </h2>
         </div>

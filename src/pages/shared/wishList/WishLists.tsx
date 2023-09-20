@@ -4,15 +4,18 @@ import { useGetProfileQuery } from "../../../redux/api/apiSlice";
 import { IBook } from "../../home/TopTenBooks/TopTenBooks";
 
 const WishLists = () => {
-  const { data, error, isLoading } = useGetProfileQuery(undefined);
+  const { data } = useGetProfileQuery(undefined);
 
   return (
     <div className="dropdown dropdown-hover">
       <label
         tabIndex={0}
-        className="btn  btn-ghost hover:bg-base-200 lg:px-6 rounded-sm group"
+        className="btn  btn-ghost hover:bg-base-200 lg:px-6 rounded-sm group "
       >
-        <TbJewishStar className={"text-xl group-hover:text-orange-500"} />
+        {data?.data?.wishlist.length > 0 && (
+          <div className="badge badge-sm">{data.data.wishlist.length}</div>
+        )}
+        <TbJewishStar className={"text-xl group-hover:text-orange-500"} />{" "}
         wishlist
       </label>
       <div

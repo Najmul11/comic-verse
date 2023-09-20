@@ -76,7 +76,7 @@ const BookDetails = () => {
   };
 
   return (
-    <div>
+    <div className="dark:bg-black dark:text-white">
       <div className="container h-screen  mx-auto flex p-16">
         <div className="w-1/2 lg:h-[700px] flex justify-center items-center">
           <img
@@ -88,27 +88,32 @@ const BookDetails = () => {
         <div className="w-1/2 p-5">
           <div className="flex justify-end gap-10 ">
             {user && (
-              <button
-                onClick={handleAddToWishlist}
-                className="btn rounded-sm group"
-              >
-                Add to wishList
-              </button>
+              <>
+                <button
+                  onClick={handleAddToWishlist}
+                  className="btn rounded-sm group"
+                >
+                  Add to wishList
+                </button>
+
+                <Link to={`/edit-book/${_id}`} className="btn rounded-sm">
+                  Edit Book
+                </Link>
+                <label htmlFor="delete-modal" className="btn rounded-sm group">
+                  {" "}
+                  <AiOutlineDelete
+                    className={"text-xl group-hover:fill-red-600"}
+                  />
+                  delete{" "}
+                </label>
+              </>
             )}
-            <Link to={`/edit-book/${_id}`} className="btn rounded-sm">
-              Edit Book
-            </Link>
-            <label htmlFor="delete-modal" className="btn rounded-sm group">
-              {" "}
-              <AiOutlineDelete className={"text-xl group-hover:fill-red-600"} />
-              delete{" "}
-            </label>
           </div>
           <div className="px-5 py-10">
             <div className="flex flex-col gap-4">
               <h2 className=" text-3xl font-semibold capitalize">{title}</h2>
               <p className="">
-                <span className="italic  text-xl text-black text-opacity-60">
+                <span className="italic  text-xl text-black text-opacity-60 dark:text-white">
                   By{" "}
                 </span>
                 <span className=" text-2xl font-medium capitalize">
@@ -116,13 +121,13 @@ const BookDetails = () => {
                 </span>
               </p>
               <p className="">
-                <span className="italic  text-xl text-black text-opacity-60">
+                <span className="italic  text-xl text-black text-opacity-60 dark:text-white">
                   Genre{" "}
                 </span>
                 <span className="text-2xl font-medium capitalize">{genre}</span>
               </p>
               <p className="">
-                <span className="italic  text-xl text-black text-opacity-60">
+                <span className="italic  text-xl text-black text-opacity-60 dark:text-white">
                   Punlication Date{" "}
                 </span>
                 <span className="text-2xl font-medium ">
@@ -130,7 +135,9 @@ const BookDetails = () => {
                 </span>
               </p>
               <div className="bg-base-200 p-5  rounded-sm flex flex-col gap-4">
-                <h4 className="text-2xl font-semibold">Reviews</h4>
+                <h4 className="text-2xl font-semibold dark:text-orange-500">
+                  Reviews
+                </h4>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="flex gap-5 ">
                     <input

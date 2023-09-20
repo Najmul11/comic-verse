@@ -1,12 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeEvent } from "react";
-import {
-  Controller,
-  SubmitErrorHandler,
-  SubmitHandler,
-  useForm,
-} from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useCreateUserMutation } from "../../redux/api/apiSlice";
+import useTitle from "../../hooks/useTitle";
+import toast from "react-hot-toast";
 
 type IFormData = {
   email: string;
@@ -14,10 +12,12 @@ type IFormData = {
   confirmPassword: string;
   image?: File | undefined;
   name: string;
+  imagePreview?: string;
 };
 
 export const Register = () => {
-  const { control, handleSubmit, setValue, watch } = useForm();
+  useTitle("Signup");
+  const { control, handleSubmit, setValue, watch } = useForm<IFormData>();
   const [createUser] = useCreateUserMutation();
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -32,25 +32,23 @@ export const Register = () => {
   const imagePreview = watch("imagePreview");
 
   const onSubmit: SubmitHandler<IFormData> = async (data) => {
-    try {
-      const formData = new FormData();
-      formData.append("file", data.image);
-      formData.append("name", data.name);
-      formData.append("email", data.email);
-      formData.append("password", data.password);
-      console.log(formData);
+    const formData = new FormData();
+    if (data.image) formData.append("file", data.image);
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
 
-      const response = await createUser(formData);
-    } catch (error) {
-      console.error(error);
-    }
+    const response = (await createUser(formData)) as any;
+    if (response.data) toast.success("You have signed up successfully");
   };
 
   return (
-    <div className="bg-base-200 min-h-screen">
+    <div className="bg-base-200 min-h-screen dark:bg-black">
       <div className="container mx-auto flex justify-center items-center">
         <div className="lg:pt-16 pt-10">
-          <h2 className="text-5xl font-bold text-center pb-8">Register</h2>
+          <h2 className="text-5xl font-bold text-center pb-8 dark:text-white">
+            Register
+          </h2>
 
           <div className="flex flex-col bg-white rounded-lg gap-4 py-4">
             <div className="rounded-full w-20 bg-gray-400 h-20 mx-auto">

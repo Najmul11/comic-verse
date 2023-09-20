@@ -5,10 +5,10 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="shadow-inner">
+    <div className="shadow-inner dark:bg-black dark:text-white ">
       <footer className="footer footer-center p-10">
         <aside>
-          <img src={BrandLogo} alt="" />
+          <img src={BrandLogo} alt="" className="dark:bg-orange-500" />
           <p className="font-bold">
             COMIC Industries Ltd. <br />
           </p>

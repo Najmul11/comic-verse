@@ -5,7 +5,7 @@ import { RootState } from "../store";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/v1",
+    baseUrl: "https://book-catalog-server-alpha.vercel.app/api/v1",
     // learned this later, no need to send header everytime if we set prepare header, headers will be attached by default
     prepareHeaders: (headers, { getState }) => {
       const state = getState() as RootState;
@@ -27,9 +27,12 @@ export const api = createApi({
     }),
     // here getBooks and getAllBooks serving same purpose, for queries customiazing the endpoint here
     getBooks: builder.query({
-      query: ({ genres, years, searchTerm }) => {
+      query: ({ genres, years, searchTerm, page }) => {
         // Construct the query parameters based on selected genres and years
         const queryParams: string[] = [];
+        if (!genres.length && !searchTerm) {
+          queryParams.push(`page=${encodeURIComponent(page)}`);
+        }
 
         if (searchTerm)
           queryParams.push(`searchTerm=${encodeURIComponent(searchTerm)}`);
@@ -47,7 +50,7 @@ export const api = createApi({
 
         // Construct the final URL with query parameters
         const url = `/books?${queryParams.join("&")}`;
-        console.log(url);
+
         return url;
       },
       providesTags: ["books"],
@@ -144,6 +147,7 @@ export const api = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["wishlist"],
     }),
 
     getProfile: builder.query({
@@ -173,24 +177,3 @@ export const {
   useDeleteFromWishlistMutation,
   useGetBooksQuery,
 } = api;
-
-// getBooks: builder.query({
-//   query: ({ genres, years }) => {
-//     // Construct the query parameters based on selected genres and years
-//     const queryParams = [];
-
-//     if (genres.length > 0) {
-//       console.log("inside");
-
-//       queryParams.push(`genres=${genres.join(",")}`);
-//     }
-//     if (years.length > 0) {
-//       queryParams.push(`years=${years.join(",")}`);
-//     }
-
-//     // Construct the final URL with query parameters
-//     const url = `/books?${queryParams.join("&")}`;
-//     console.log(url);
-//     return url;
-//   },
-// }),

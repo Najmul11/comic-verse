@@ -6,7 +6,6 @@ type IProps = {
   handleGenreChange: (genre: string) => void;
   handleYearChange: (year: number) => void;
   handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  searchText: string;
 };
 
 const Sidebar = ({
@@ -15,18 +14,17 @@ const Sidebar = ({
   handleGenreChange,
   handleYearChange,
   handleSearch,
-  searchText,
 }: IProps) => {
   return (
-    <div className=" rounded-lg flex flex-col gap-5">
+    <div className=" rounded-lg flex flex-col gap-5 dark:text-white">
       <div>
         <label className="label">
-          <span className="label-text">Search</span>
+          <span className="label-text dark:text-white">Search</span>
         </label>
         <input
           type="text"
           placeholder="Search by title, author, genre"
-          className="input input-bordered w-full rounded-md"
+          className="input input-bordered w-full rounded-md dark:text-black"
           onChange={handleSearch}
         />
       </div>
@@ -37,7 +35,7 @@ const Sidebar = ({
             <div key={index} className="flex items-center ">
               <input
                 type="checkbox"
-                className="checkbox rounded-sm checkbox-xs  "
+                className="checkbox rounded-sm checkbox-xs  dark:border-white"
                 id={genre}
                 name="genre"
                 checked={selectedGenres.includes(genre)}
@@ -60,7 +58,7 @@ const Sidebar = ({
             <div key={index} className="flex items-center ">
               <input
                 type="checkbox"
-                className="checkbox rounded-sm checkbox-xs  "
+                className="checkbox rounded-sm checkbox-xs  dark:border-whit"
                 id={`year-${year}`}
                 name="year"
                 checked={selectedYears.includes(year)}

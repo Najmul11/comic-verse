@@ -3,6 +3,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useUserLoginMutation } from "../../redux/api/apiSlice";
 import { useAppDispatch } from "../../redux/hook";
 import { setAccessToken } from "../../redux/slices/accessTokenSlice";
+import { setUser } from "../../redux/slices/userSlice";
+import jwtDecode from "jwt-decode";
+import useTitle from "../../hooks/useTitle";
 
 type IFormData = {
   email: string;
@@ -10,12 +13,12 @@ type IFormData = {
 };
 
 export const Login = () => {
-  const [userLogin, { isLoading, isSuccess }] = useUserLoginMutation();
+  useTitle("Login");
+  const [userLogin] = useUserLoginMutation();
   const { handleSubmit, control, watch } = useForm<IFormData>();
 
   const location = useLocation();
   const navigate = useNavigate();
-
   const from = location.state?.from?.pathname || "/";
 
   const dispatch = useAppDispatch();
@@ -25,6 +28,8 @@ export const Login = () => {
       if ("data" in response) {
         const accessToken = response.data?.data?.accessToken;
         await dispatch(setAccessToken(accessToken));
+        const decodedToken = jwtDecode(accessToken);
+        await dispatch(setUser(decodedToken));
         navigate(from, { replace: true });
       }
     } catch (error) {
@@ -34,10 +39,12 @@ export const Login = () => {
   const password = watch("password");
   const email = watch("email");
   return (
-    <div className="bg-base-200 min-h-screen">
+    <div className="bg-base-200 min-h-screen dark:bg-black">
       <div className="container mx-auto flex justify-center items-center">
         <div className="lg:pt-32 pt-10">
-          <h2 className="text-5xl font-bold text-center pb-8">Login now!</h2>
+          <h2 className="text-5xl font-bold text-center pb-8 dark:text-white">
+            Login now!
+          </h2>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="w-[430px]  bg-white rounded-lg p-6 px-8 flex flex-col "

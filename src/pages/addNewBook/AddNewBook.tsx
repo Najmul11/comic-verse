@@ -4,6 +4,7 @@ import { ChangeEvent } from "react";
 import { useAppSelector } from "../../redux/hook";
 import { useListNewBookMutation } from "../../redux/api/apiSlice";
 import toast from "react-hot-toast";
+import useTitle from "../../hooks/useTitle";
 
 type IFormData = {
   author: string;
@@ -11,10 +12,13 @@ type IFormData = {
   publishedDate: string;
   image?: File | undefined;
   genre: string;
+  imagePreview?: string;
 };
 
 const AddNewBook = () => {
-  const { control, handleSubmit, setValue, watch, reset } = useForm();
+  useTitle("Add new book");
+  const { control, handleSubmit, setValue, watch, reset } =
+    useForm<IFormData>();
 
   const { accessToken } = useAppSelector((state) => state.accessToken);
   const [listNewBook, { isLoading }] = useListNewBookMutation();
@@ -38,7 +42,7 @@ const AddNewBook = () => {
     formData.append("title", data.title);
     formData.append("genre", data.genre);
     formData.append("publishedDate", data.publishedDate);
-    formData.append("file", data.image);
+    if (data.image) formData.append("file", data.image);
 
     const response = (await listNewBook({
       data: formData,
@@ -53,10 +57,12 @@ const AddNewBook = () => {
   };
 
   return (
-    <div className="bg-base-200 min-h-screen">
+    <div className="bg-base-200 min-h-screen dark:bg-black">
       <div className="container mx-auto flex justify-center items-center">
-        <div className="lg:pt-24 pt-10">
-          <h2 className="text-5xl font-bold text-center pb-8">List a Book</h2>
+        <div className="lg:pt-20 pt-10">
+          <h2 className="text-5xl font-bold text-center pb-8 dark:text-white">
+            List a Book
+          </h2>
           <div className="flex  bg-white rounded-lg">
             <form
               onSubmit={handleSubmit(onSubmit)}

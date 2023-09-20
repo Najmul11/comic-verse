@@ -9,6 +9,7 @@ import {
 import { useParams } from "react-router-dom";
 import { IBook } from "../home/TopTenBooks/TopTenBooks";
 import toast from "react-hot-toast";
+import useTitle from "../../hooks/useTitle";
 
 type IFormData = {
   author: string;
@@ -16,11 +17,14 @@ type IFormData = {
   publishedDate: string;
   image?: File | undefined;
   genre: string;
+  imagePreview?: string;
 };
 
 const EditBook = () => {
+  useTitle("Edit book");
   const { id } = useParams();
-  const { control, handleSubmit, setValue, watch, reset } = useForm();
+  const { control, handleSubmit, setValue, watch, reset } =
+    useForm<IFormData>();
 
   const [editBook, { isLoading }] = useEditBookMutation();
   const { data } = useGetSingleBookQuery(id);
@@ -51,7 +55,7 @@ const EditBook = () => {
     formData.append("title", data.title);
     formData.append("genre", data.genre);
     formData.append("publishedDate", data.publishedDate);
-    formData.append("file", data.image);
+    if (data.image) formData.append("file", data.image);
 
     const response = (await editBook({
       id,
@@ -67,10 +71,12 @@ const EditBook = () => {
   };
 
   return (
-    <div className="bg-base-200 min-h-screen">
+    <div className="bg-base-200 min-h-screen dark:bg-black">
       <div className="container mx-auto flex justify-center items-center">
         <div className="lg:pt-24 pt-10">
-          <h2 className="text-5xl font-bold text-center pb-8">Update book</h2>
+          <h2 className="text-5xl font-bold text-center pb-8 dark:text-white">
+            Update book
+          </h2>
           <div className="flex  bg-white rounded-lg">
             <form
               onSubmit={handleSubmit(onSubmit)}
