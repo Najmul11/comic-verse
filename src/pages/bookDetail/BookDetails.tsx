@@ -87,7 +87,7 @@ const BookDetails = () => {
         </div>
         <div className="lg:w-1/2 lg:p-5 py-5">
           {user && (
-            <div className="flex lg:justify-end justify-between px-1">
+            <div className="flex lg:justify-end justify-between px-1 gap-2">
               <button
                 onClick={handleAddToWishlist}
                 className="btn rounded-sm group"

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeEvent } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCreateUserMutation } from "../../redux/api/apiSlice";
 import useTitle from "../../hooks/useTitle";
 import toast from "react-hot-toast";
@@ -17,6 +17,7 @@ type IFormData = {
 
 export const Register = () => {
   useTitle("Signup");
+  const navigate = useNavigate();
   const { control, handleSubmit, setValue, watch } = useForm<IFormData>();
   const [createUser] = useCreateUserMutation();
 
@@ -32,6 +33,8 @@ export const Register = () => {
   const imagePreview = watch("imagePreview");
 
   const onSubmit: SubmitHandler<IFormData> = async (data) => {
+    if (data.password !== data.confirmPassword)
+      return toast.error("Password do not match");
     const formData = new FormData();
     if (data.image) formData.append("file", data.image);
     formData.append("name", data.name);
@@ -39,7 +42,12 @@ export const Register = () => {
     formData.append("password", data.password);
 
     const response = (await createUser(formData)) as any;
-    if (response.data) toast.success("You have signed up successfully");
+
+    if (response.data) {
+      navigate("/");
+      toast.success("You have signed up successfully! Now login");
+    }
+    if (response.error) toast.error(response.error.data.message);
   };
 
   return (

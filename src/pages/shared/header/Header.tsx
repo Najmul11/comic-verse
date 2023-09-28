@@ -85,6 +85,9 @@ const Header = () => {
           <div className="navbar-end ">
             {user && (
               <div className="flex gap-5 items-center">
+                <p className="bg-gray-100 rounded-xl py-[2px] px-2">
+                  {data?.data?.email}
+                </p>
                 <div className="dropdown dropdown-end  ">
                   <label
                     tabIndex={0}

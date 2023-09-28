@@ -10,7 +10,9 @@ const DeleteModal = ({ handleDelete, deleteLoading }: IProps) => {
       <div className="modal">
         <div className="modal-box relative">
           <div className=" flex flex-col">
-            <h2 className="card-title">You are about to delist the book</h2>
+            <h2 className="card-title dark:text-black">
+              You are about to delist the book
+            </h2>
             <div className="card-actions justify-end  mt-8 gap-5">
               <button disabled={deleteLoading} className="btn rounded-sm group">
                 <label htmlFor="delete-modal">CANCEL </label>
